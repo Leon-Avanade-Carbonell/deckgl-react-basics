@@ -80,3 +80,10 @@ export default function RootLayout({
   )
 }
 ```
+
+## Mapping Component
+
+```bash
+npm install react-map-gl maplibre-gl
+npm install deck.gl --save
+```
