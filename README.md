@@ -4,9 +4,7 @@
 npx create-next-app@latest
 ```
 
-## For
-
-## Developer Experience for clean codes
+## Developer Experience for clean codes (optional)
 
 ```bash
 npm install --save-dev prettier-eslint
@@ -23,4 +21,12 @@ Create a '.prettierrc' file in the root folder
   "singleQuote": true,
   "plugins": ["prettier-plugin-tailwindcss"]
 }
+```
+
+## State Management Libraries
+
+The Jotai library works as an alternative to React-Context which allows us to manage states globally (unless scoped)
+
+```bash
+npm i jotai
 ```
