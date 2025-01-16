@@ -1,40 +1,40 @@
 'use client'
 
-import { Map, useControl } from 'react-map-gl/maplibre'
-import { MapboxOverlay } from '@deck.gl/mapbox'
-import { DeckProps } from '@deck.gl/core'
-import { ScatterplotLayer } from '@deck.gl/layers'
 import 'maplibre-gl/dist/maplibre-gl.css'
-
-function DeckGLOverlay(props: DeckProps) {
-  const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props))
-  overlay.setProps(props)
-  return null
-}
+import BaseMap, { mapViewStateAtom } from '@/components/map/base-map'
+import { useSetAtom } from 'jotai'
+import { useCallback } from 'react'
+import { FlyToInterpolator } from 'deck.gl'
 
 export default function MapComponent() {
-  const layers = [
-    new ScatterplotLayer({
-      id: 'deckgl-circle',
-      data: [{ position: [0.45, 51.47] }],
-      getPosition: (d) => d.position,
-      getFillColor: [255, 0, 0, 100],
-      getRadius: 1000,
-      beforeId: 'watername_ocean', // In interleaved mode render the layer under map labels
-    }),
-  ]
+  const setMapViewState = useSetAtom(mapViewStateAtom)
 
+  const flyToCity = useCallback(
+    ({ lat, lon }: { lat: number; lon: number }) => {
+      setMapViewState((view) => ({
+        ...view,
+        longitude: lon,
+        latitude: lat,
+        zoom: 12,
+        transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+        transitionDuration: 'auto',
+      }))
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   return (
-    <Map
-      initialViewState={{
-        longitude: 0.45,
-        latitude: 51.47,
-        zoom: 11,
-      }}
-      style={{ height: '100vh' }}
-      mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-    >
-      <DeckGLOverlay layers={layers} />
-    </Map>
+    <>
+      <div className="flex-row- flex justify-between">
+        <div className="grow">
+          <BaseMap height="80vh" width="500px" />
+        </div>
+        <div>
+          <button onClick={() => flyToCity({ lon: -122.4, lat: 37.74 })}>
+            Test
+          </button>
+        </div>
+      </div>
+    </>
   )
 }
