@@ -30,3 +30,9 @@ The Jotai library works as an alternative to React-Context which allows us to ma
 ```bash
 npm i jotai
 ```
+
+TanStack's React-query would be used for handling requests and have in-memory cache which would be used when hiding and showing layers with data
+
+```bash
+npm i @tanstack/react-query
+```
