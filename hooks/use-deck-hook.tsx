@@ -1,9 +1,14 @@
+import { LayerByIDType, layersAtom } from '@/store/layers-atom'
 import { mapViewStateAtom } from '@/store/map-atom'
 import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 
 export default function useDeckHook() {
   const setMapViewState = useSetAtom(mapViewStateAtom)
+  const setLayers = useSetAtom(layersAtom)
+
+  const setLayerById = ({ id, layer }: LayerByIDType) =>
+    setLayers((layers) => ({ ...layers, [id]: layer }))
 
   const flyToCoordinate = useCallback(
     ({
@@ -26,5 +31,5 @@ export default function useDeckHook() {
     []
   )
 
-  return { flyToCoordinate }
+  return { flyToCoordinate, setLayerById }
 }

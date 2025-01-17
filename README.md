@@ -128,8 +128,8 @@ export default function BaseMap({
     <DeckGL
       initialViewState={{
         zoom: 3.5,
-        latitude: -27,
-        longitude: 135,
+        longitude: -122.4,
+        latitude: 37.74,
         pitch: undefined,
         bearing: undefined,
         transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
@@ -150,4 +150,129 @@ export default function BaseMap({
 
 We can now treat the DeckGL map as a React component
 
+## Creating Layers
+
+For this section of the application, we will take advantage of the Jotai state-management library. This enables use to access state from wherever within the app.
+
+Create a new atom `/store/layers-atom.tsx`
+
+```tsx
+import { Layer } from 'deck.gl'
+import { atom } from 'jotai'
+
+export type LayerByIDType = {
+  id: string
+  layer: Layer
+}
+
+export const layersAtom = atom<Record<string, Layer>>({})
+```
+
+In the `components/map/basemap.tsx` we would want to import the atom and add all the layers in the DeckGL component
+
+```tsx
+import { layersAtom } from '@/store/layers-atom'
+
+function BaseMap() {
+  const layersMap = useAtomValue(layersAtom)
+  const layers = Object.values(layersMap)
+
+  return (
+        <DeckGL
+          initialViewState={mapViewState}
+          style={{ height, width, position: 'relative' }}
+          controller
+          layers={layers}
+          {/* {...props} */}
+        >
+        {/*rest of the codes*/}
+        </DeckGL >
+  )
+
+}
+```
+
+We can now add layers to the DeckGL component with the layers atom.
+
+To simplify adding the layers, we can create a hook that updates the layersAtom.
+Create a file `/hooks/use-deck-hook.tsx`
+
+```tsx
+import { LayerByIDType, layersAtom } from '@/store/layers-atom'
+import { useSetAtom } from 'jotai'
+
+export default function useDeckHook() {
+  // We want to be able to index the layers for accessibility
+  const setLayerById = ({ id, layer }: LayerByIDType) =>
+    setLayers((layers) => ({ ...layers, [id]: layer }))
+
+  return { setLayerById }
+}
+```
+
+Now that we have access to adding layers, we can start building out one.
+We can start with a sample component from DeckGL: https://deck.gl/docs/api-reference/layers/icon-layer
+
+Create a file `/components/map/layers/basic.tsx`
+
+```tsx
+import useDeckHook from '@/hooks/use-deck-hook'
+import { ScatterplotLayer } from 'deck.gl'
+
+type BartStation = {
+  name: string
+  entries: number
+  exits: number
+  coordinates: [longitude: number, latitude: number]
+}
+
+export default function BasicLayer() {
+  const id = 'basic-layer'
+
+  const { setLayerById } = useDeckHook()
+  setLayerById({
+    id,
+    layer: new ScatterplotLayer<BartStation>({
+      id: 'ScatterplotLayer',
+      data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json',
+
+      stroked: true,
+      getPosition: (d: BartStation) => d.coordinates,
+      getRadius: (d: BartStation) => Math.sqrt(d.exits),
+      getFillColor: [255, 140, 0],
+      getLineColor: [0, 0, 0],
+      getLineWidth: 10,
+      radiusScale: 6,
+      pickable: true,
+    }),
+  })
+
+  return null
+}
+```
+
+To check out your reactive layer, you can create a new client-side component and add it to your page
+
+```tsx
+'use client'
+
+import BaseMap from '@/components/map/base-map'
+import BasicLayer from '@/components/map/layers/basic'
+
+export default function MapComponent() {
+  return (
+    <>
+      <BasicLayer />
+      <BaseMap height="100vh" width="80vw" />
+    </>
+  )
+}
+```
+
 ## Interactivity
+
+### Fly to function
+
+### Hiding and showing layers
+
+### Async data and composite layers
