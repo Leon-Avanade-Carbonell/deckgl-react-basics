@@ -87,3 +87,13 @@ export default function RootLayout({
 npm install react-map-gl maplibre-gl
 npm install deck.gl --save
 ```
+
+In the DeckGL documents, we want to follow the guides for using map-libre with react-map-gl
+
+## ShadCDN components
+
+TBA
+
+# Building the Map components
+
+## BaseMap

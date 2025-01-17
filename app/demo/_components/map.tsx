@@ -1,36 +1,24 @@
 'use client'
 
 import 'maplibre-gl/dist/maplibre-gl.css'
-import BaseMap, { mapViewStateAtom } from '@/components/map/base-map'
-import { useSetAtom } from 'jotai'
-import { useCallback } from 'react'
-import { FlyToInterpolator } from 'deck.gl'
+import BaseMap from '@/components/map/base-map'
+import useDeckHook from '@/hooks/use-deck-hook'
 
 export default function MapComponent() {
-  const setMapViewState = useSetAtom(mapViewStateAtom)
+  const { flyToCoordinate } = useDeckHook()
 
-  const flyToCity = useCallback(
-    ({ lat, lon }: { lat: number; lon: number }) => {
-      setMapViewState((view) => ({
-        ...view,
-        longitude: lon,
-        latitude: lat,
-        zoom: 12,
-        transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
-        transitionDuration: 'auto',
-      }))
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
   return (
     <>
       <div className="flex-row- flex justify-between">
-        <div className="grow">
-          <BaseMap height="80vh" width="500px" />
+        <div className="w-[75%]" style={{ width: '75%' }}>
+          <BaseMap height="100vh" width="80vw" />
         </div>
         <div>
-          <button onClick={() => flyToCity({ lon: -122.4, lat: 37.74 })}>
+          <button
+            onClick={() => {
+              flyToCoordinate({ longitude: -122.4, latitude: 37.74 })
+            }}
+          >
             Test
           </button>
         </div>

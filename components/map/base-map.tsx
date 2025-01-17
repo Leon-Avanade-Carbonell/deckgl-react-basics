@@ -3,7 +3,7 @@
 import DeckGL, { DeckGLProps } from '@deck.gl/react'
 import Map from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { MapViewState } from 'deck.gl'
+import { FlyToInterpolator, MapViewState } from 'deck.gl'
 import { atom, useAtomValue } from 'jotai'
 
 interface IBaseMapProps extends DeckGLProps {
@@ -17,6 +17,8 @@ export const mapViewStateAtom = atom<MapViewState>({
   longitude: 135,
   pitch: undefined,
   bearing: undefined,
+  transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+  transitionDuration: 'auto',
 })
 
 export default function BaseMap({
