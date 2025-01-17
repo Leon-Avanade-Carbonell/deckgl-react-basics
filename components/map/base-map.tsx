@@ -3,23 +3,13 @@
 import DeckGL, { DeckGLProps } from '@deck.gl/react'
 import Map from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { FlyToInterpolator, MapViewState } from 'deck.gl'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
+import { mapViewStateAtom } from '@/store/map-atom'
 
 interface IBaseMapProps extends DeckGLProps {
   height?: string
   width?: string
 }
-
-export const mapViewStateAtom = atom<MapViewState>({
-  zoom: 3.5,
-  latitude: -27,
-  longitude: 135,
-  pitch: undefined,
-  bearing: undefined,
-  transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
-  transitionDuration: 'auto',
-})
 
 export default function BaseMap({
   height = '100vh',
@@ -30,8 +20,7 @@ export default function BaseMap({
   return (
     <DeckGL
       initialViewState={mapViewState}
-      //   viewState={mapViewState}
-      style={{ height, width }}
+      style={{ height, width, position: 'relative' }}
       controller
       {...props}
     >

@@ -92,8 +92,62 @@ In the DeckGL documents, we want to follow the guides for using map-libre with r
 
 ## ShadCDN components
 
-TBA
+For simplicity of the application, we can use the default settings for the Shadcn components
+
+```bash
+npx shadcn@latest init -d
+npx shadcn@latest add button select input
+```
 
 # Building the Map components
 
 ## BaseMap
+
+We want to create a BaseMap that will be used to contain the DeckGL component and the tiles.
+Create a new file `components/map/base-map.tsx`
+
+```tsx
+'use client'
+
+import DeckGL, { DeckGLProps } from '@deck.gl/react'
+import { FlyToInterpolator } from 'deck.gl'
+import Map from 'react-map-gl/maplibre'
+import 'maplibre-gl/dist/maplibre-gl.css'
+
+interface IBaseMapProps extends DeckGLProps {
+  height?: string
+  width?: string
+}
+
+export default function BaseMap({
+  height = '100vh',
+  width = '100vw',
+  ...props
+}: IBaseMapProps) {
+  return (
+    <DeckGL
+      initialViewState={{
+        zoom: 3.5,
+        latitude: -27,
+        longitude: 135,
+        pitch: undefined,
+        bearing: undefined,
+        transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+        transitionDuration: 'auto',
+      }}
+      style={{ height, width }}
+      controller
+      {...props}
+    >
+      <Map
+        id="base-map"
+        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+      />
+    </DeckGL>
+  )
+}
+```
+
+We can now treat the DeckGL map as a React component
+
+## Interactivity

@@ -1,4 +1,4 @@
-import { mapViewStateAtom } from '@/components/map/base-map'
+import { mapViewStateAtom } from '@/store/map-atom'
 import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 
