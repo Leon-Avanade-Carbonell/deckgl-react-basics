@@ -7,3 +7,5 @@ export type LayerByIDType = {
 }
 
 export const layersAtom = atom<Record<string, Layer>>({})
+
+export const visibleLayersByIdAtom = atom<string[]>([])

@@ -338,7 +338,6 @@ export default function useDeckHook() {
 + return { flyToCoordinate, setLayerById }
 
 }
-
 ```
 
 ### Hiding and showing layers

@@ -1,11 +1,17 @@
-import { LayerByIDType, layersAtom } from '@/store/layers-atom'
+import {
+  LayerByIDType,
+  layersAtom,
+  visibleLayersByIdAtom,
+} from '@/store/layers-atom'
 import { mapViewStateAtom } from '@/store/map-atom'
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 
 export default function useDeckHook() {
   const setMapViewState = useSetAtom(mapViewStateAtom)
   const setLayers = useSetAtom(layersAtom)
+
+  const [visibleLayers, setVisibleLayers] = useAtom(visibleLayersByIdAtom)
 
   const setLayerById = ({ id, layer }: LayerByIDType) =>
     setLayers((layers) => ({ ...layers, [id]: layer }))
@@ -31,5 +37,17 @@ export default function useDeckHook() {
     []
   )
 
-  return { flyToCoordinate, setLayerById }
+  const toggleLayerVisibility = useCallback(
+    (id: string) => {
+      setVisibleLayers((layers) =>
+        layers.includes(id)
+          ? layers.filter((layerId) => layerId !== id)
+          : [...layers, id]
+      )
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
+  return { flyToCoordinate, setLayerById, visibleLayers, toggleLayerVisibility }
 }
