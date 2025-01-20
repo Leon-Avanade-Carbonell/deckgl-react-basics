@@ -179,11 +179,8 @@ function BaseMap() {
 
   return (
         <DeckGL
-          initialViewState={mapViewState}
-          style={{ height, width, position: 'relative' }}
-          controller
-          layers={layers}
           {/* {...props} */}
+          layers={layers}
         >
         {/*rest of the codes*/}
         </DeckGL >
@@ -271,7 +268,78 @@ export default function MapComponent() {
 
 ## Interactivity
 
+If we want to manage the camera / view, we can pass a state to the viewState parameter of the DeckGL component.
+See [https://deck.gl/docs/developer-guide/interactivity#externally-manage-view-state](https://deck.gl/docs/developer-guide/interactivity#externally-manage-view-state)
+
+First is to create an atom for the mapViewState.
+Create a file `store\map-atom.tsx`
+
+```tsx
+import { FlyToInterpolator, MapViewState } from 'deck.gl'
+import { atom } from 'jotai'
+
+export const mapViewStateAtom = atom<MapViewState>({
+  zoom: 3.5,
+  latitude: -27,
+  longitude: 135,
+  transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+  transitionDuration: 'auto',
+})
+```
+
+In the basemap, use the mapViewStateAtom and replace the initialViewState
+
+```diff
++ const mapViewState = useAtomValue(mapViewStateAtom)
+
+- initialViewState={{
+-   zoom: 3.5,
+-   longitude: -122.4,
+-   latitude: 37.74,
+-   pitch: undefined,
+-   bearing: undefined,
+-   transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+-   transitionDuration: 'auto',
+- }}
++ initialViewState={mapViewState}
+```
+
+Now when we update the value of the mapViewStateAtom, the map will pdate the map based on the change in state
+
 ### Fly to function
+
+Using the mapViewStateAtom, we can create a function in the use-deck-hook page that we can reuse anywhere in the application
+
+```diff
+export default function useDeckHook() {
+
++ const flyToCoordinate = useCallback(
++   ({
++     latitude,
++     longitude,
++     zoom = 12,
++   }: {
++     latitude: number
++     longitude: number
++     zoom?: number
++   }) => {
++     setMapViewState((view) => ({
++       ...view,
++       longitude,
++       latitude,
++       zoom,
++     }))
++   },
++   // eslint-disable-next-line react-hooks/exhaustive-deps
++   []
++ )
+
+- return { setLayerById }
++ return { flyToCoordinate, setLayerById }
+
+}
+
+```
 
 ### Hiding and showing layers
 
