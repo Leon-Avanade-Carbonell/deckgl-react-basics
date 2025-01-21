@@ -6,8 +6,10 @@ import BasicLayer from '@/components/map/layers/basic'
 export default function MapComponent() {
   return (
     <>
-      <BasicLayer />
-      <BaseMap height="100vh" width="80vw" />
+      <div className="grow-1 min-w-[80%]">
+        <BasicLayer />
+        <BaseMap height="100vh" width="100%" />
+      </div>
     </>
   )
 }

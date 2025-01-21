@@ -342,4 +342,38 @@ export default function useDeckHook() {
 
 ### Hiding and showing layers
 
-### Async data and composite layers
+According to DeckGL, we could just recreate the layer instance rather than hiding and showing the layer.
+
+> Creating layer instances in Deck.gl is cheap because the application reuses the state object from the previous layer
+
+In case you just want to show and hide a layer, we can use the visible property of the layer.
+To implement it, we can have a state to keep track of the layers' visibility.
+
+In the `store\layers-atom.tsx` file, add the visibleLayersByIdAtom atom
+
+```tsx
+export const visibleLayersByIdAtom = atom<string[]>([])
+```
+
+You can add a way to manage the visible layers atom in the `hooks\use-deck-hook.tsx` file.
+
+```diff
+export default function useDeckHook() {
++  const [visibleLayers, setVisibleLayers] = useAtom(visibleLayersByIdAtom)
+
++  const toggleLayerVisibility = useCallback(
++    (id: string) => {
++      setVisibleLayers((layers) =>
++        layers.includes(id)
++          ? layers.filter((layerId) => layerId !== id)
++          : [...layers, id]
++      )
++    },
++    // eslint-disable-next-line react-hooks/exhaustive-deps
++    []
++  )
+
+- return { flyToCoordinate, setLayerById }
++ return { flyToCoordinate, setLayerById, visibleLayers, toggleLayerVisibility }
+}
+```

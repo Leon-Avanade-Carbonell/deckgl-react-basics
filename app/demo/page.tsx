@@ -4,10 +4,8 @@ import SidePanel from './_components/side-panel'
 export default function DemoPage() {
   return (
     <>
-      <div className="flex flex-row-reverse" id="map">
-        <div className="grow-1 min-w-[80%]">
-          <Map />
-        </div>
+      <div className="flex flex-row">
+        <Map />
         <SidePanel />
       </div>
     </>

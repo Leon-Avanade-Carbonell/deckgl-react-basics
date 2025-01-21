@@ -5,7 +5,7 @@ import { Toggle } from '@/components/ui/toggle'
 import useDeckHook from '@/hooks/use-deck-hook'
 import { layersAtom } from '@/store/layers-atom'
 import { useAtomValue } from 'jotai'
-import { Eye, EyeClosed } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 
 export default function SidePanel() {
   const { flyToCoordinate, toggleLayerVisibility, visibleLayers } =
@@ -36,8 +36,11 @@ export default function SidePanel() {
             >
               <div>{id}</div>
               <div>
-                <Toggle onPressedChange={() => toggleLayerVisibility(id)}>
-                  {visibleLayers.includes(id) ? <Eye /> : <EyeClosed />}
+                <Toggle
+                  size="sm"
+                  onPressedChange={() => toggleLayerVisibility(id)}
+                >
+                  {visibleLayers.includes(id) ? <Eye /> : <EyeOff />}
                 </Toggle>
               </div>
             </div>
