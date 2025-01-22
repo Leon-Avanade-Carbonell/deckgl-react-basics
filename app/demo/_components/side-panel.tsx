@@ -16,7 +16,7 @@ export default function SidePanel() {
   return (
     <>
       <div className="flex w-full flex-col gap-4 p-2">
-        <div>
+        <div className="flex flex-col gap-4">
           <Button
             onClick={() =>
               flyToCoordinate({
@@ -27,20 +27,26 @@ export default function SidePanel() {
           >
             Cats are just a big fluffy duff
           </Button>
+          <Button className="dark">Dark Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button className="dark" variant="secondary">
+            Dark Secondary
+          </Button>
         </div>
         <div>
           {layerIds.map((id) => (
-            <div
-              key={id}
-              className="flex h-12 items-center justify-between bg-slate-400 p-2"
-            >
+            <div key={id} className="flex h-12 items-center justify-between">
               <div>{id}</div>
               <div>
                 <Toggle
                   size="sm"
                   onPressedChange={() => toggleLayerVisibility(id)}
                 >
-                  {visibleLayers.includes(id) ? <Eye /> : <EyeOff />}
+                  {visibleLayers.includes(id) ? (
+                    <Eye className="text-primary" />
+                  ) : (
+                    <EyeOff className="text-secondary" />
+                  )}
                 </Toggle>
               </div>
             </div>

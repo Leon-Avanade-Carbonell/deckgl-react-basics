@@ -16,6 +16,14 @@ export default function useDeckHook() {
   const setLayerById = ({ id, layer }: LayerByIDType) =>
     setLayers((layers) => ({ ...layers, [id]: layer }))
 
+  /**
+   * Updates the map view state to fly to the specified coordinates with an optional zoom level.
+   *
+   * @param {Object} params - The parameters for the fly-to operation.
+   * @param {number} params.latitude - The latitude of the target location.
+   * @param {number} params.longitude - The longitude of the target location.
+   * @param {number} [params.zoom=12] - The zoom level for the map view (default is 12).
+   */
   const flyToCoordinate = useCallback(
     ({
       latitude,
