@@ -10,11 +10,13 @@ import { layersAtom } from '@/store/layers-atom'
 interface IBaseMapProps extends DeckGLProps {
   height?: string
   width?: string
+  customStyle?: Partial<CSSStyleDeclaration>
 }
 
 export default function BaseMap({
   height = '100vh',
   width = '100vw',
+  customStyle = {},
   ...props
 }: IBaseMapProps) {
   const mapViewState = useAtomValue(mapViewStateAtom)
@@ -24,7 +26,7 @@ export default function BaseMap({
   return (
     <DeckGL
       initialViewState={mapViewState}
-      style={{ height, width, position: 'relative' }}
+      style={{ ...customStyle, height, width, position: 'relative' }}
       controller
       layers={layers}
       {...props}
