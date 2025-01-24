@@ -25,12 +25,7 @@ export default function SidePanel() {
               })
             }
           >
-            Cats are just a big fluffy duff
-          </Button>
-          <Button className="dark">Dark Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button className="dark" variant="secondary">
-            Dark Secondary
+            Fly to San Francisco
           </Button>
         </div>
         <div>
