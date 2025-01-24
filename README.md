@@ -1,3 +1,8 @@
+# Demo
+
+![DeckGL map with interactivity](https://github.com/user-attachments/assets/b0dbfabf-bf71-4dad-ae8d-bb01fa331b5b)
+
+
 # Project Setup
 
 ```bash
