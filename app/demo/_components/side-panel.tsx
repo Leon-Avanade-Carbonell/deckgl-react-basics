@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Toggle } from '@/components/ui/toggle'
 import useDeckHook from '@/hooks/use-deck-hook'
 import { layersAtom } from '@/store/layers-atom'
+import { currentViewStateAtom } from '@/store/map-atom'
 import { useAtomValue } from 'jotai'
 import { Eye, EyeOff } from 'lucide-react'
 
@@ -12,6 +13,7 @@ export default function SidePanel() {
     useDeckHook()
   const layers = useAtomValue(layersAtom)
   const layerIds = Object.keys(layers)
+  const currentViewState = useAtomValue(currentViewStateAtom)
 
   return (
     <>
@@ -27,6 +29,9 @@ export default function SidePanel() {
           >
             Fly to San Francisco
           </Button>
+        </div>
+        <div className="max-w-sm">
+          {JSON.stringify(currentViewState, null, 4)}
         </div>
         <div>
           {layerIds.map((id) => (

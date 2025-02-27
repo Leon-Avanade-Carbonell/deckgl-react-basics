@@ -2,7 +2,6 @@
 
 ![DeckGL map with interactivity](https://github.com/user-attachments/assets/b0dbfabf-bf71-4dad-ae8d-bb01fa331b5b)
 
-
 # Project Setup
 
 ```bash
@@ -309,7 +308,7 @@ In the basemap, use the mapViewStateAtom and replace the initialViewState
 + initialViewState={mapViewState}
 ```
 
-Now when we update the value of the mapViewStateAtom, the map will pdate the map based on the change in state
+Now when we update the value of the mapViewStateAtom, the map will update the map based on the change in state
 
 ### Fly to function
 
